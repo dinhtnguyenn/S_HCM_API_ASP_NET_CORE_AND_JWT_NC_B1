@@ -84,7 +84,7 @@ namespace WebApplication2.Controllers
 
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(1), signingCredentials: signIn);
+            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddDays(1), signingCredentials: signIn);
 
 
             return Ok(new Token(new JwtSecurityTokenHandler().WriteToken(token)));
