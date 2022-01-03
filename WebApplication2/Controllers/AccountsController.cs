@@ -1,12 +1,14 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
 {
-    [Route("/apis/")]
+    [Route("/api/")]
     [ApiController]
+    [Authorize]
     public class AccountsController : ControllerBase
     {
         private readonly dinhntco_studywithmeContext db;
