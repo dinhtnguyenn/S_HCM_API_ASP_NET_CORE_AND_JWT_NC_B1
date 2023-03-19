@@ -8565,23 +8565,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DinhNguyen\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DinhNguyen\\Desktop\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj",
       "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\DinhNguyen\\Desktop\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
-      "packagesPath": "C:\\Users\\DinhNguyen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DinhNguyen\\Desktop\\WebApplication2\\WebApplication2\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\DinhNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8656,7 +8652,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   },

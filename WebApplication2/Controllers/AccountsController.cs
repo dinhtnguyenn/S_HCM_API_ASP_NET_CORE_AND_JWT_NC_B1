@@ -5,7 +5,7 @@ using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
 {
-    [Route("/apis/")]
+    [Route("/api/")]
     [ApiController]
     public class AccountsController : ControllerBase
     {

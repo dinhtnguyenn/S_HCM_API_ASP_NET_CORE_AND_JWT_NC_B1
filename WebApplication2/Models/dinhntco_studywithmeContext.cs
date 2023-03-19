@@ -17,6 +17,7 @@ namespace WebApplication2.Models
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<fpt_login> Fpt_Logins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +49,15 @@ namespace WebApplication2.Models
                 entity.ToTable("Product");
 
                 entity.Property(e => e.ProductName).IsRequired();
+            });
+
+            modelBuilder.Entity<fpt_login>(entity =>
+            {
+                entity.HasKey(e => e.username);
+
+                entity.ToTable("fpt_login");
+
+                entity.Property(e => e.password).IsRequired();
             });
 
             OnModelCreatingPartial(modelBuilder);
