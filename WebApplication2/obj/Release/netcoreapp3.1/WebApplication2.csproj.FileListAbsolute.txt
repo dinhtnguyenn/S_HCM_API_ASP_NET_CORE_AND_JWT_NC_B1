@@ -276,3 +276,14 @@ C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.dll
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.pdb
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.genruntimeconfig.cache
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\bin\Release\netcoreapp3.1\WebApplication2.Views.dll
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\bin\Release\netcoreapp3.1\WebApplication2.Views.pdb
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.RazorAssemblyInfo.cache
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.RazorAssemblyInfo.cs
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.TagHelpers.input.cache
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.TagHelpers.output.cache
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.RazorCoreGenerate.cache
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\Razor\Views\FPTApis\Index.cshtml.g.cs
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.RazorTargetAssemblyInfo.cs
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\WebApplication2.Views.pdb

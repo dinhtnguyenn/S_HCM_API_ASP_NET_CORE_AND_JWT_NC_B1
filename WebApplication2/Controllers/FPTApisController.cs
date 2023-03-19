@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using WebApplication2.Models;
 
@@ -26,21 +27,27 @@ namespace WebApplication2.Controllers
         [Route("register")]
         public IActionResult RegisterAccount(fpt_login account)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Ok(new Message(0, "Đăng ký tài khoản không thành công. Vui lòng kiểm tra và thử lại"));
-            }
+                if (!ModelState.IsValid)
+                {
+                    return Ok(new Message(0, "Đăng ký tài khoản không thành công"));
+                }
 
-            fpt_login check = db.Fpt_Logins.SingleOrDefault(p => p.username.Equals(account.username));
-            if (check != null)
+                fpt_login check = db.Fpt_Logins.SingleOrDefault(p => p.username.Equals(account.username));
+                if (check != null)
+                {
+                    return Ok(new Message(0, "Username đã được đăng ký"));
+                }
+
+                db.Fpt_Logins.Add(account);
+                db.SaveChanges();
+                return Ok(new Message(1, "Đăng ký tài khoản thành công"));
+            }
+            catch (Exception e)
             {
-                return Ok(new Message(2, "MSSV đã được đăng ký. Vui lòng kiểm tra và thử lại"));
+                return Ok(new Message(0, "Đăng ký tài khoản không thành công - catch:err"));
             }
-
-            db.Fpt_Logins.Add(account);
-            db.SaveChanges();
-
-            return Ok(new Message(1, "Bạn đã đăng ký tài khoản thành công"));
             //return CreatedAtRoute("AllAccount", new { id = account.No }, account);
         }
 
@@ -48,14 +55,48 @@ namespace WebApplication2.Controllers
         [Route("login")]
         public IActionResult Login(fpt_login loginModel)
         {
-            fpt_login account = db.Fpt_Logins.SingleOrDefault(p => p.username.Equals(loginModel.username) && p.password.Equals(loginModel.password));
-
-            if (account == null)
+            try
             {
-                return Ok(new DetailLogin(0, "Đăng nhập thất bại. Vui lòng kiểm tra và thử lại", null, null));
+                fpt_login account = db.Fpt_Logins.SingleOrDefault(p => p.username.Equals(loginModel.username) && p.password.Equals(loginModel.password));
+
+                if (account == null)
+                {
+                    return Ok(new DetailLogin(0, "Đăng nhập không thành công", null, null));
+                }
+                return Ok(new DetailLogin(1, "Đăng nhập thành công", account.username));
+                //return CreatedAtRoute("AllAccount", new { id = account.No }, account);
             }
-            return Ok(new DetailLogin(1, "Đăng nhập thành công", account.username));
-            //return CreatedAtRoute("AllAccount", new { id = account.No }, account);
+            catch (Exception e)
+            {
+                return Ok(new Message(0, "Đăng nhập không thành công - catch:err"));
+            }
+
+        }
+
+        [HttpPost]
+        [Route("save-score")]
+        public IActionResult UpdateScore(fpt_login loginModel)
+        {
+            try
+            {
+                fpt_login account = db.Fpt_Logins.SingleOrDefault(p => p.username.Equals(loginModel.username));
+
+                if (account == null)
+                {
+                    return Ok(new Message(0, "Không tìm thấy tài khoản - catch: null"));
+                }
+                else
+                {
+                    account.score = loginModel.score;
+                    db.Fpt_Logins.Update(account);
+                    db.SaveChanges();
+                    return Ok(new Message(1, "Lưu score thành công"));
+                }
+            }
+            catch (Exception e)
+            {
+                return Ok(new Message(0, "Lưu score thất bại - catch:err"));
+            }
         }
     }
 }
