@@ -121,4 +121,6 @@ C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\WebApplication2.Views.dll
+C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\WebApplication2.Views.pdb
 C:\Users\Admin\Desktop\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\WebApplication2\obj\Release\netcoreapp3.1\PubTmp\Out\WebApplication2.deps.json
