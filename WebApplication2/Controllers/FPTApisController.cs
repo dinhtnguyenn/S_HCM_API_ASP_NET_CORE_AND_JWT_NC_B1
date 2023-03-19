@@ -61,9 +61,9 @@ namespace WebApplication2.Controllers
 
                 if (account == null)
                 {
-                    return Ok(new DetailLogin(0, "Đăng nhập không thành công", null, null));
+                    return Ok(new Message(0, "Đăng nhập không thành công"));
                 }
-                return Ok(new DetailLogin(1, "Đăng nhập thành công", account.username));
+                return Ok(new Message(1, "Đăng nhập thành công"));
                 //return CreatedAtRoute("AllAccount", new { id = account.No }, account);
             }
             catch (Exception e)
