@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj": {}
+    "/Users/dinhnguyenn/Desktop/S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1/WebApplication2/WebApplication2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj": {
+    "/Users/dinhnguyenn/Desktop/S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1/WebApplication2/WebApplication2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj",
+        "projectUniqueName": "/Users/dinhnguyenn/Desktop/S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1/WebApplication2/WebApplication2.csproj",
         "projectName": "WebApplication2",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\WebApplication2.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1\\WebApplication2\\obj\\",
+        "projectPath": "/Users/dinhnguyenn/Desktop/S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1/WebApplication2/WebApplication2.csproj",
+        "packagesPath": "/Users/dinhnguyenn/.nuget/packages/",
+        "outputPath": "/Users/dinhnguyenn/Desktop/S_HCM_API_ASP_NET_CORE_AND_JWT_NC_B1/WebApplication2/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/dinhnguyenn/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -77,10 +75,25 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-x64",
+              "version": "[3.1.32, 3.1.32]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -89,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.202/RuntimeIdentifierGraph.json"
         }
       }
     }
