@@ -53,6 +53,8 @@ namespace WebApplication2
                     ClockSkew = TimeSpan.Zero //mặc định token sẽ có thêm 5ph so với expires, thêm thuộc tính ClockSkew để bỏ đi.
                 };
             });
+
+            services.AddScoped<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
