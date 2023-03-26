@@ -48,6 +48,24 @@ namespace WebApplication2.Controllers
                 .Normalize(NormalizationForm.FormC);
         }
 
+        private void saveLog(fpt_datalog fpt_Datalog)
+        {
+            try
+            {
+                foreach (var header in Request.Headers)
+                {
+                    fpt_Datalog.info += header.Key + " : " + header.Value + " | "; 
+                }
+
+                db.Fpt_Datalogs.Add(fpt_Datalog);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         //check vail email
         public bool IsValidEmail(string email)
         {
@@ -80,25 +98,31 @@ namespace WebApplication2.Controllers
                     listLB.Add(new fpt_LeaderBoard(item.username, item.score));
                 }
 
+                //save log
                 fpt_datalog fpt_Datalog = new fpt_datalog();
-                fpt_Datalog.logData += ">>>Ranking>>" + DateTime.Now + ">"
-                     + JsonSerializer.Serialize(listLB) + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+                fpt_Datalog.api = "GET: fpt/list";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = "";
+                fpt_Datalog.response = JsonSerializer.Serialize(listLB);
+                fpt_Datalog.ex = "";
+                saveLog(fpt_Datalog);
             }
             catch (Exception e)
             {
-                fpt_datalog fpt_Datalog = new fpt_datalog();
                 Message message = new Message(0, "Lấy danh sách không thành công");
+
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-                fpt_Datalog.logData += ">>>Ranking>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(listLB) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_datalog fpt_Datalog = new fpt_datalog();
+                fpt_Datalog.api = "GET: fpt/list";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = "";
+                fpt_Datalog.response = JsonSerializer.Serialize(listLB) + ">>" + JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
             }
 
 
@@ -109,10 +133,15 @@ namespace WebApplication2.Controllers
         [Route("all")]
         public IActionResult GetInfoAll()
         {
+
+            //save log
             fpt_datalog fpt_Datalog = new fpt_datalog();
-            fpt_Datalog.logData += ">>>GetInfoAll>>" + DateTime.Now + ">>END;";
-            db.Fpt_Datalogs.Add(fpt_Datalog);
-            db.SaveChanges();
+            fpt_Datalog.api = "GET: fpt/all";
+            fpt_Datalog.date = DateTime.Now + "";
+            fpt_Datalog.request = "";
+            fpt_Datalog.response = "";
+            fpt_Datalog.ex = "";
+            saveLog(fpt_Datalog);
 
             return Ok(db.Fpt_Logins.ToList());
         }
@@ -121,10 +150,14 @@ namespace WebApplication2.Controllers
         [Route("details")]
         public IActionResult GetDetailInfo(string id)
         {
+            //save log
             fpt_datalog fpt_Datalog = new fpt_datalog();
-            fpt_Datalog.logData += ">>>GetDetailInfo>>" + DateTime.Now + ">>END;";
-            db.Fpt_Datalogs.Add(fpt_Datalog);
-            db.SaveChanges();
+            fpt_Datalog.api = "GET: fpt/details";
+            fpt_Datalog.date = DateTime.Now + "";
+            fpt_Datalog.request = id;
+            fpt_Datalog.response = "";
+            fpt_Datalog.ex = "";
+            saveLog(fpt_Datalog);
 
             return Ok(db.Fpt_Logins.SingleOrDefault(p => p.username == id));
         }
@@ -142,41 +175,53 @@ namespace WebApplication2.Controllers
         {
             try
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
                 if (account.username == null || account.password == null || account.username.Equals("") || account.password.Equals("") || string.IsNullOrEmpty(account.username) || string.IsNullOrEmpty(account.password))
                 {
                     Message message = new Message(0, "Nhập đầy đủ thông tin");
-                    fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/register";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(account);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
                 if (!ModelState.IsValid)
                 {
                     Message message = new Message(0, "Đăng ký tài khoản không thành công");
-                    fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/register";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(account);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
                 if (IsValidEmail(account.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/register";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(account);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -184,11 +229,15 @@ namespace WebApplication2.Controllers
                 if (check != null)
                 {
                     Message message = new Message(0, "Username đã được đăng ký");
-                    fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/register";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(account);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -196,16 +245,18 @@ namespace WebApplication2.Controllers
                 account.positionY = "";
                 account.positionZ = "";
                 account.score = 0;
-
                 db.Fpt_Logins.Add(account);
                 db.SaveChanges();
 
                 Message message2 = new Message(1, "Đăng ký tài khoản thành công");
-                fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(account) + ">"
-                    + JsonSerializer.Serialize(message2, jso) + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/register";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(account);
+                fpt_Datalog.response = JsonSerializer.Serialize(message2, jso);
+                fpt_Datalog.ex = "";
+                saveLog(fpt_Datalog);
 
                 return Ok(message2);
             }
@@ -216,12 +267,14 @@ namespace WebApplication2.Controllers
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-                fpt_Datalog.logData += ">>>Register>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(account) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/register";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(account);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
 
                 return Ok(message);
             }
@@ -233,20 +286,22 @@ namespace WebApplication2.Controllers
         {
             try
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
-
                 if (loginModel.username == null || loginModel.password == null || loginModel.username.Equals("") || loginModel.password.Equals("") || string.IsNullOrEmpty(loginModel.username) || string.IsNullOrEmpty(loginModel.password))
                 {
                     Message message = new Message(0, "Nhập đầy đủ thông tin");
-                    fpt_Datalog.logData += ">>>Login>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/login";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(message);
                 }
@@ -254,11 +309,15 @@ namespace WebApplication2.Controllers
                 if (IsValidEmail(loginModel.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>Login>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/login";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -267,40 +326,46 @@ namespace WebApplication2.Controllers
                 if (account == null)
                 {
                     MessageLoginModel messageLoginModel = new MessageLoginModel(0, "Đăng nhập không thành công", "", -1, "", "", "");
-                    fpt_Datalog.logData += ">>>Login>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(messageLoginModel, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/login";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(messageLoginModel, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(messageLoginModel);
                 }
 
                 MessageLoginModel messageLoginModel2 = new MessageLoginModel(1, "Đăng nhập thành công", account.username, account.score, account.positionX, account.positionY, account.positionZ);
-                fpt_Datalog.logData += ">>>Login>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(loginModel) + ">"
-                    + JsonSerializer.Serialize(account) + ">"
-                    + JsonSerializer.Serialize(messageLoginModel2, jso) + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/login";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                fpt_Datalog.response = JsonSerializer.Serialize(messageLoginModel2, jso) + ">>" + JsonSerializer.Serialize(account);
+                fpt_Datalog.ex = "";
+                saveLog(fpt_Datalog);
 
                 return Ok(messageLoginModel2);
             }
             catch (Exception e)
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
-
                 MessageLoginModel message = new MessageLoginModel(0, "Đăng nhập không thành công", "", -1, "", "", "");
-                fpt_Datalog.logData += ">>>Login>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(loginModel) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/login";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
 
                 return Ok(message);
             }
@@ -321,11 +386,15 @@ namespace WebApplication2.Controllers
                 if (IsValidEmail(loginModel.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>SaveScore>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-score";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -334,11 +403,15 @@ namespace WebApplication2.Controllers
                 if (account == null)
                 {
                     Message message = new Message(0, "Không tìm thấy tài khoản");
-                    fpt_Datalog.logData += ">>>SaveScore>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-score";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
                 else
@@ -348,29 +421,35 @@ namespace WebApplication2.Controllers
                     db.SaveChanges();
 
                     Message message = new Message(1, "Lưu score thành công");
-                    fpt_Datalog.logData += ">>>SaveScore>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-score";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(message);
                 }
             }
             catch (Exception e)
-            {//unicode json
+            {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
+                //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
                 Message message = new Message(0, "Lưu score thất bại");
-                fpt_Datalog.logData += ">>>SaveScore>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(loginModel) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/save-score";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
+
                 return Ok(message);
             }
         }
@@ -380,20 +459,26 @@ namespace WebApplication2.Controllers
         public IActionResult UpdatePosition(fpt_login loginModel)
         {
             try
-            {//unicode json
+            {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
+                //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
+
 
                 if (IsValidEmail(loginModel.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>SavePosition>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-position";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -402,11 +487,15 @@ namespace WebApplication2.Controllers
                 if (account == null)
                 {
                     Message message = new Message(0, "Không tìm thấy tài khoản");
-                    fpt_Datalog.logData += ">>>SavePosition>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-position";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
                 else
@@ -418,30 +507,36 @@ namespace WebApplication2.Controllers
                     db.SaveChanges();
 
                     Message message = new Message(1, "Lưu position thành công");
-                    fpt_Datalog.logData += ">>>SavePosition>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(loginModel) + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/save-position";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(message);
                 }
             }
             catch (Exception e)
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
+
                 Message message = new Message(0, "Lưu position thất bại");
-                fpt_Datalog.logData += ">>>SavePosition>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(loginModel) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/save-position";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(loginModel);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = "";
+                saveLog(fpt_Datalog);
+
                 return Ok(message);
             }
         }
@@ -452,31 +547,38 @@ namespace WebApplication2.Controllers
         {
             try
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
-
                 if (changepassword.username == null || changepassword.oldpassword == null || changepassword.newpassword == null || changepassword.username.Equals("") || changepassword.oldpassword.Equals("") || changepassword.newpassword.Equals("") || string.IsNullOrEmpty(changepassword.username) || string.IsNullOrEmpty(changepassword.oldpassword) || string.IsNullOrEmpty(changepassword.newpassword))
                 {
                     Message message = new Message(0, "Nhập đầy đủ thông tin");
-                    fpt_Datalog.logData += ">>>ChangePassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(changepassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/change-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(changepassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
                 if (IsValidEmail(changepassword.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>ChangePassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(changepassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/change-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(changepassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -485,11 +587,15 @@ namespace WebApplication2.Controllers
                 if (account == null)
                 {
                     Message message = new Message(0, "Không tìm thấy tài khoản");
-                    fpt_Datalog.logData += ">>>ChangePassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(changepassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/change-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(changepassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
                 else
@@ -499,29 +605,36 @@ namespace WebApplication2.Controllers
                     db.SaveChanges();
 
                     Message message = new Message(1, "Đổi mật khẩu thành công");
-                    fpt_Datalog.logData += ">>>ChangePassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(changepassword) + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/change-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(changepassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(message);
                 }
             }
             catch (Exception e)
-            {//unicode json
+            {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
+                //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
+
                 Message message = new Message(0, "Đổi mật khẩu thất bại");
-                fpt_Datalog.logData += ">>>ChangePassword>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(changepassword) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/change-password";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(changepassword);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
+
                 return Ok(message);
             }
         }
@@ -532,31 +645,38 @@ namespace WebApplication2.Controllers
         {
             try
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
-
                 if (sendotp.username == null || sendotp.username.Equals("") || string.IsNullOrEmpty(sendotp.username))
                 {
                     Message message = new Message(0, "Nhập đầy đủ thông tin");
-                    fpt_Datalog.logData += ">>>SendOTP>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(sendotp) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/send-otp";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(sendotp);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
                 if (IsValidEmail(sendotp.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>SendOTP>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(sendotp) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/send-otp";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(sendotp);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -573,40 +693,49 @@ namespace WebApplication2.Controllers
                     db.SaveChanges();
 
                     Message message = new Message(1, "Gửi OTP thành công");
-                    fpt_Datalog.logData += ">>>SendOTP>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(sendotp) + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/send-otp";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(sendotp);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
 
                     return Ok(message);
                 }
                 else
                 {
                     Message message = new Message(0, "Không tìm thấy tài khoản");
-                    fpt_Datalog.logData += ">>>SendOTP>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(sendotp) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/send-otp";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(sendotp);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
             }
             catch (Exception e)
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
                 Message message = new Message(0, "Gửi OTP thất bại");
-                fpt_Datalog.logData += ">>>SendOTP>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(sendotp) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/send-otp";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(sendotp);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = e.ToString();
+                saveLog(fpt_Datalog);
+
                 return Ok(message);
             }
         }
@@ -626,22 +755,30 @@ namespace WebApplication2.Controllers
                 if (resetpassword.username == null || resetpassword.newpassword == null || resetpassword.username.Equals("") || resetpassword.otp.Equals("") || resetpassword.newpassword.Equals("") || string.IsNullOrEmpty(resetpassword.username) || string.IsNullOrEmpty(resetpassword.newpassword))
                 {
                     Message message = new Message(0, "Nhập đầy đủ thông tin");
-                    fpt_Datalog.logData += ">>>ResetPassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(resetpassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/reset-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(resetpassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
                 if (IsValidEmail(resetpassword.username) == false)
                 {
                     Message message = new Message(0, "Username phải là email");
-                    fpt_Datalog.logData += ">>>ResetPassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(resetpassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/reset-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(resetpassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
 
@@ -650,11 +787,15 @@ namespace WebApplication2.Controllers
                 if (account == null)
                 {
                     Message message = new Message(0, "Không tìm thấy tài khoản hoặc nhập mã OTP sai");
-                    fpt_Datalog.logData += ">>>ResetPassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(resetpassword) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/reset-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(resetpassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
                 else
@@ -665,29 +806,35 @@ namespace WebApplication2.Controllers
                     db.SaveChanges();
 
                     Message message = new Message(1, "Reset mật khẩu thành công");
-                    fpt_Datalog.logData += ">>>ResetPassword>>" + DateTime.Now + ">"
-                        + JsonSerializer.Serialize(resetpassword) + ">"
-                        + JsonSerializer.Serialize(account) + ">"
-                        + JsonSerializer.Serialize(message, jso) + ">>END;";
-                    db.Fpt_Datalogs.Add(fpt_Datalog);
-                    db.SaveChanges();
+
+                    //save log
+                    fpt_Datalog.api = "POST: fpt/reset-password";
+                    fpt_Datalog.date = DateTime.Now + "";
+                    fpt_Datalog.request = JsonSerializer.Serialize(resetpassword);
+                    fpt_Datalog.response = JsonSerializer.Serialize(message, jso) + ">>>" + JsonSerializer.Serialize(account);
+                    fpt_Datalog.ex = "";
+                    saveLog(fpt_Datalog);
+
                     return Ok(message);
                 }
             }
             catch (Exception e)
             {
+                fpt_datalog fpt_Datalog = new fpt_datalog();
                 //unicode json
                 JsonSerializerOptions jso = new JsonSerializerOptions();
                 jso.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-                fpt_datalog fpt_Datalog = new fpt_datalog();
                 Message message = new Message(0, "Reset mật khẩu thất bại");
-                fpt_Datalog.logData += ">>>ResetPassword>>" + DateTime.Now + ">"
-                    + JsonSerializer.Serialize(resetpassword) + ">"
-                    + JsonSerializer.Serialize(message, jso) + ">"
-                    + e.ToString() + ">>END;";
-                db.Fpt_Datalogs.Add(fpt_Datalog);
-                db.SaveChanges();
+
+                //save log
+                fpt_Datalog.api = "POST: fpt/reset-password";
+                fpt_Datalog.date = DateTime.Now + "";
+                fpt_Datalog.request = JsonSerializer.Serialize(resetpassword);
+                fpt_Datalog.response = JsonSerializer.Serialize(message, jso);
+                fpt_Datalog.ex = "";
+                saveLog(fpt_Datalog);
+
                 return Ok(message);
             }
         }
